@@ -1,4 +1,4 @@
-const {app, BrowserWindow, dialog} = require('electron');
+const {app, BrowserWindow, session} = require('electron');
 let win;
 const appUrl = `file:/${__dirname}/index.html`;
 
@@ -13,8 +13,16 @@ function createElectronShell(){
     win.on('closed', () => {
         win = null;
     })
-    console.log(dialog.showOpenDialog({'properties': ['openfile']}))
-    //dialog.showMessageBox({'title': 'Minha Mensagem', 'message': 'oiiiiii'});
+
+    const filter = {
+        urls: ["https://*.github.com/*"]
+    }
+    
+    session.defaultSession.webRequest.onBeforeSendHeaders(filter, (details, callback) => {
+        details.requestHeaders['User-Agent'] = "TreinaWeb";
+        
+        callback({cancel: false, requestHeaders: details.requestHeaders});
+    })
 }
 
 // verifica se deu inicio a aplicação e exibe a janela
@@ -31,3 +39,4 @@ app.on('active', () => {
         createElectronShell();
     }
 })
+

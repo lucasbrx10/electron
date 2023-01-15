@@ -1,15 +1,37 @@
- <!DOCTYPE html>
- <html lang="en">
- <head>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello Electron</title>
- </head>
- <body>
-    <h1>Hello World!</h1>
+</head>
+
+<body>
+    <input id="input" type="text" onblur="search()" />
+    <ul id="ul"></ul>
     <script>
-        console.log('Hello World');
+        var myInput = document.getElementById('input'),
+            myList = document.querySelector('ul');
+
+        function search() {
+            var value = myInput.value;
+            fetch(`https://api.github.com/search/repositories?q=${value}`)
+                .then(response => response.json())
+                .then(response => {
+                    var list = response.items,
+                        template = '';
+
+                    list.forEach(item => {
+                        template += `
+                            <li>${item.name}</li>
+                        `;
+                    })
+                    myList.innerHTML = template;
+                })
+        }
     </script>
- </body>
- </html>
+</body>
+
+</html>
