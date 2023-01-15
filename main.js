@@ -1,12 +1,15 @@
 const {app, BrowserWindow} = require('electron');
 let win;
+const appUrl = `file:/${__dirname}/index.html`;
 
 // cria uma janela
-function createElectronShell(){ 
+function createElectronShell(){
     win = new BrowserWindow({
         width: 800,
         height: 600
     });
+    win.loadURL(appUrl);
+    win.webContents.openDevTools();
     win.on('closed', () => {
         win = null;
     })
