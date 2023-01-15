@@ -1,6 +1,5 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, dialog} = require('electron');
 let win;
-let child;
 const appUrl = `file:/${__dirname}/index.html`;
 
 // cria uma janela
@@ -14,13 +13,8 @@ function createElectronShell(){
     win.on('closed', () => {
         win = null;
     })
-
-    child = new BrowserWindow({
-        width: 200,
-        height: 200,
-        parent: win,
-        modal: true
-    });
+    console.log(dialog.showOpenDialog({'properties': ['openfile']}))
+    //dialog.showMessageBox({'title': 'Minha Mensagem', 'message': 'oiiiiii'});
 }
 
 // verifica se deu inicio a aplicação e exibe a janela
